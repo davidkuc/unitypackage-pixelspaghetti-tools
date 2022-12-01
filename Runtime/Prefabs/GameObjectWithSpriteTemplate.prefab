@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7373624115535608610}
   m_Layer: 0
-  m_Name: GameObjectWithSprite
+  m_Name: GameObjectWithSpriteTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1790101415
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

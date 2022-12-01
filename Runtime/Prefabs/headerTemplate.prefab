@@ -221,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5143217567631648966}
   m_Layer: 0
-  m_Name: header
+  m_Name: headerTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
