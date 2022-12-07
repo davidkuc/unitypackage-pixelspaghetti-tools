@@ -13,7 +13,7 @@ public class AddNameSpace : UnityEditor.AssetModificationProcessor
 
         string rootNamespace = string.IsNullOrWhiteSpace(EditorSettings.projectGenerationRootNamespace) ?
           string.Empty : $"{EditorSettings.projectGenerationRootNamespace}.";
-        file = file.Replace("TestingProject.", rootNamespace);
+        file = file.Replace("#NAMESPACE#", rootNamespace);
 
         System.IO.File.WriteAllText(path, file);
         AssetDatabase.Refresh();
