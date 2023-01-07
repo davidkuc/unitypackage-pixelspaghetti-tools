@@ -47,7 +47,8 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
 
         if (dictionary == null)
         {
-            throw new ArgumentException("The passed dictionary is null.");
+            Debug.LogError("The passed dictionary is null.");
+            return;
         }
 
         foreach (KeyValuePair<TKey, TValue> pair in dictionary)
