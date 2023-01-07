@@ -107,7 +107,8 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
     {
         if (KeyPositions.ContainsKey(key))
         {
-            throw new ArgumentException("An element with the same key already exists in the dictionary.");
+            Debug.LogError("An element with the same key already exists in the dictionary.");
+            return;
         }
         else
         {
@@ -177,7 +178,8 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
 
         if (array.Length - arrayIndex < numKeys)
         {
-            throw new ArgumentException("arrayIndex");
+            Debug.LogError("Invalid index while copying");
+            return;
         }
 
         for (int i = 0; i < numKeys; ++i, ++arrayIndex)
