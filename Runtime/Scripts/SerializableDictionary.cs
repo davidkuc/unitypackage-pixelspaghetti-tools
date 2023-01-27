@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SerializableDictionary
 {
 }
 
 [Serializable]
-public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDictionary<TKey, TValue>, ISerializationCallbackReceiver
+public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDictionary<TKey, TValue>, ISerializationCallbackReceiver, ICloneable where TValue : ICloneable
 {
     [SerializeField]
     private List<SerializableKeyValuePair> list = new List<SerializableKeyValuePair>();
@@ -65,7 +64,7 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
 
         for (int i = 0; i < numEntries; ++i)
         {
-            result[list[i].Key] = (uint) i;
+            result[list[i].Key] = (uint)i;
         }
 
         return result;
@@ -84,16 +83,16 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
     #region IDictionary
     public TValue this[TKey key]
     {
-        get => list[(int) KeyPositions[key]].Value;
+        get => list[(int)KeyPositions[key]].Value;
         set
         {
             if (KeyPositions.TryGetValue(key, out uint index))
             {
-                list[(int) index].SetValue(value);
+                list[(int)index].SetValue(value);
             }
             else
             {
-                KeyPositions[key] = (uint) list.Count;
+                KeyPositions[key] = (uint)list.Count;
 
                 list.Add(new SerializableKeyValuePair(key, value));
             }
@@ -107,12 +106,12 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
     {
         if (KeyPositions.ContainsKey(key))
         {
-            Debug.LogError("An element with the same key already exists in the dictionary.");
+            Debug.LogError($"An element with the same key already exists in the dictionary.");
             return;
         }
         else
         {
-            KeyPositions[key] = (uint) list.Count;
+            KeyPositions[key] = (uint)list.Count;
 
             list.Add(new SerializableKeyValuePair(key, value));
         }
@@ -128,13 +127,13 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
 
             kp.Remove(key);
 
-            list.RemoveAt((int) index);
+            list.RemoveAt((int)index);
 
             int numEntries = list.Count;
 
             for (uint i = index; i < numEntries; i++)
             {
-                kp[list[(int) i].Key] = i;
+                kp[list[(int)i].Key] = i;
             }
 
             return true;
@@ -147,13 +146,13 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
     {
         if (KeyPositions.TryGetValue(key, out uint index))
         {
-            value = list[(int) index].Value;
+            value = list[(int)index].Value;
 
             return true;
         }
 
         value = default;
-            
+
         return false;
     }
     #endregion
@@ -204,5 +203,15 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
         }
     }
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public object Clone()
+    {
+        var clonedObject = new SerializableDictionary<TKey, TValue>();
+
+        foreach (var item in list)
+            clonedObject.Add(item.Key, (TValue)item.Value.Clone());
+
+        return clonedObject;
+    }
     #endregion
 }

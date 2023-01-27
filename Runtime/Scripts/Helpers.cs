@@ -9,25 +9,36 @@ public static class Helpers
         return go.activeInHierarchy;
     }
 
-    public static GameObject SetEnemyFacingDirection(this GameObject go, float direction)
+    public static GameObject
+    SetEnemyFacingDirection(this GameObject go, float direction)
     {
-        go.transform.localScale = new Vector3(go.transform.localScale.x * Mathf.Sign(direction), 
-            go.transform.localScale.y, go.transform.localScale.z);
+        go.transform.localScale =
+            new Vector3(go.transform.localScale.x * Mathf.Sign(direction),
+                go.transform.localScale.y,
+                go.transform.localScale.z);
 
         return go;
     }
 
+    public static Button GetButton(this GameObject go) =>
+        go.GetComponent<Button>();
 
-    public static Button GetButton(this GameObject go) => go.GetComponent<Button>();
+    public static Button GetButton(this Transform transform) =>
+        transform.GetComponent<Button>();
 
-    public static Button GetButton(this Transform transform) => transform.GetComponent<Button>();
+    public static Vector2
+    GetDirection(Vector3 startPosition, Vector3 endPosition) =>
+        (endPosition - startPosition).normalized;
 
-    public static Vector2 GetDirection(Vector3 startPosition, Vector3 endPosition) => (endPosition - startPosition).normalized;
 
-    #region Coloring Debug.Log()
+#region Coloring Debug.Log()
     public static string ToHex(this Color color)
     {
-        return string.Format("#{0:X2}{1:X2}{2:X2}", ToByte(color.r), ToByte(color.g), ToByte(color.b));
+        return string
+            .Format("#{0:X2}{1:X2}{2:X2}",
+            ToByte(color.r),
+            ToByte(color.g),
+            ToByte(color.b));
     }
 
     private static byte ToByte(float f)
@@ -42,5 +53,27 @@ public static class Helpers
         output = string.Format("<color={0}>{1}</color>", color.ToHex(), text);
         return output;
     }
-    #endregion
+#endregion
+
+#region Sound
+
+    public static float LinearToDecibel(float linear)
+    {
+        float dB;
+
+        if (linear != 0)
+            dB = 20.0f * Mathf.Log10(linear);
+        else
+            dB = -144.0f;
+
+        return dB;
+    }
+
+    public static float DecibelToLinear(float dB)
+    {
+        float linear = Mathf.Pow(10.0f, dB / 20.0f);
+
+        return linear;
+    }
+#endregion
 }
